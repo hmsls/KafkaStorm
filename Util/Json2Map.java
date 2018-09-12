@@ -1,9 +1,8 @@
-package Util;
+//package Util;
 
 import clojure.lang.Obj;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONAware;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.*;
@@ -28,12 +27,11 @@ public class Json2Map {
         Set<Map.Entry<Object,Object>> docset = mapObj.entrySet();
         Iterator<Map.Entry<Object,Object>> docentry = docset.iterator();
         //创建字段列表
-        List<Object> fields = new ArrayList<Object>();
+        List<Object> fields = new ArrayList<Object>();;
         while (docentry.hasNext()){
             Map.Entry<Object,Object> entry = docentry.next();
             Object key = entry.getKey();
             Object value = entry.getValue();
-
             if(key.getClass().isInstance(new JSONObject())){
                 String subDoc = ((JSONObject) key).toJSONString();
                 Map<Object,Object> subMap = json2Map(subDoc);
@@ -44,7 +42,6 @@ public class Json2Map {
                 Map<Object,Object> listMap = json2Map(jsonStr);
                 map2List(listMap);
             }
-
             if(value.getClass().isInstance(new JSONObject())){
                 String subDoc = ((JSONObject) value).toJSONString();
                 Map<Object,Object> subMap = json2Map(subDoc);
@@ -64,13 +61,17 @@ public class Json2Map {
                 }
             }
         }
-        fieldsList.add(fields);
+        if(fields.size()>0){
+            fieldsList.add(fields);
+        }
     }
 
     public static void main(String[] args){
         String str = "{\"0\":\"zhangsan\",\"1\":\"lisi\",\"2\":\"wangwu\",\"3\":\"maliu\"}";
-        String strArr = "{{\"0\":\"zhangsan\",\"1\":\"lisi\",\"2\":\"wangwu\",\"3\":\"maliu\"}," + "{\"00\":\"zhangsan\",\"11\":\"lisi\",\"22\":\"wangwu\",\"33\":\"maliu\"}}";
-        Map m = json2Map(strArr);
+        String strArr1 = "{{{\"0\":\"zhangsan\",\"1\":\"lisi\",\"2\":\"wangwu\",\"3\":\"maliu\"},{\"999\":\"zhangsan\",\"888\":\"lisi\",\"777\":\"wangwu\",\"666\":\"maliu\"},},"
+                + "{{\"00\":\"zhangsan\",\"11\":\"lisi\",\"22\":\"wangwu\",\"33\":\"maliu\"},{\"000\":\"zhangsan\",\"111\":\"lisi\",\"222\":\"wangwu\",\"333\":\"maliu\"}},\"22\":\"zhangsan\"}";
+        String strArr = "{\"people\": {\"name\":\"zhangsan\",\"age\":\"22\"},\"people2\": {\"name\":\"lisi\",\"age\": \"24\"}}";
+        Map m = json2Map(strArr1);
         map2List(m);
         for(List l:fieldsList){
             System.out.println(l);
