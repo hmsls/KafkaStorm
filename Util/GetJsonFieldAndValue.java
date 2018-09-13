@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.util.*;
 
-public class Json2Map {
+public class GetJsonFieldAndValue {
 
     public static List<List<Object>> fieldsList = new ArrayList<List<Object>>();
 
