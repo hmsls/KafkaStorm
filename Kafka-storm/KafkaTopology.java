@@ -14,9 +14,9 @@ import org.apache.storm.topology.TopologyBuilder;
 public class KafkaTopology {
     public static void main(String[] args){
         //zk连接串
-        ZkHosts zh = new ZkHosts("60.24.65.179:2181");
+        ZkHosts zh = new ZkHosts("server:2181");
         //kafka主题信息，第一个是zookeeper连接信息，第二个是主题，第三个是zk中的根路径，第四个是主题的路径，前后都没有/
-        SpoutConfig kafkaConfig = new SpoutConfig(zh,"lishuai","","brokers/topics/lishuai");
+        SpoutConfig kafkaConfig = new SpoutConfig(zh,"FrmsDSQueue","","brokers/topics/FrmsDSQueue");
         //主题消息选择以字符串的形式
         kafkaConfig.scheme = new SchemeAsMultiScheme(new StringScheme());
 

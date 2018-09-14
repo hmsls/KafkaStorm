@@ -25,7 +25,7 @@ public class SentenceBolt extends BaseBasicBolt {
         if(StringUtils.isBlank(word)){
             return;
         }
-        System.out.println("Received Word:" + word);
+//        System.out.println("Received Word:" + word);
 //        words.add(word);
 //        if(word.endsWith(".")){
 //            collector.emit(ImmutableList.of((Object)StringUtils.join(words,' ')));

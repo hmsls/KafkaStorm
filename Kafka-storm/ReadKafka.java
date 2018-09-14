@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import kafka.api.OffsetRequest;
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;
 import kafka.consumer.ConsumerIterator;
@@ -23,6 +24,7 @@ public class ReadKafka {
         prop.put("zookeeper.session.timeout.ms", "5000");
         prop.put("zookeeper.sync.time.ms", "2500");
         prop.put("auto.commit.interval.ms", "10000");
+//        prop.put("auto.offset.reset",OffsetRequest.LargestTimeString());
         consumer = Consumer.createJavaConsumerConnector(new ConsumerConfig(prop));
         this.topic = topic;
     }
@@ -42,8 +44,8 @@ public class ReadKafka {
         }
     }
     public static void main(String[] args) {
-        String topic = "lishuai";
-        ReadKafka sc = new ReadKafka("60.24.65.179:2181", "testgrout", topic);
+        String topic = "FrmsDSQueue";
+        ReadKafka sc = new ReadKafka("server:2181", "testgrout", topic);
         sc.testConsumer();
     }
 }

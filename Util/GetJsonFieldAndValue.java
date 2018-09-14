@@ -4,6 +4,8 @@ import clojure.lang.Obj;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.ParserConfig;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import java.util.*;
 
@@ -12,14 +14,19 @@ public class GetJsonFieldAndValue {
     public static List<List<Object>> fieldsList = new ArrayList<List<Object>>();
 
     public static Map json2Map(String jsonString){
+        //设置解析json时有@type类型的无法自动解析问题，后面是增加的为包名，可以用逗号隔开不同的包名。
+        ParserConfig.getGlobalInstance().addAccept("cn.xx.xxx.");
+        ParserConfig.getGlobalInstance().addAccept("cn.xx.xxx.xxxx.");
+        //值为数字类型，没有双引号时，转换一下
+        JSON.toJSONString(jsonString, SerializerFeature.WriteNonStringValueAsString);
         //第一种方式
-//        Map maps = (Map)JSON.parse(jsonString);
+//        Map map = (Map)JSON.parse(jsonString);
         //方式二
         Map map = JSON.parseObject(jsonString,Map.class);
         //方式三
-//        Map json = (Map) JSONObject.parse(jsonString);
+//        Map map = (Map) JSONObject.parse(jsonString);
         //方式四
-//        Map mapObj = JSONObject.parseObject(jsonString,Map.class);
+//        Map map = JSONObject.parseObject(jsonString,Map.class);
         return map;
     }
 
@@ -68,10 +75,9 @@ public class GetJsonFieldAndValue {
 
     public static void main(String[] args){
         String str = "{\"0\":\"zhangsan\",\"1\":\"lisi\",\"2\":\"wangwu\",\"3\":\"maliu\"}";
-        String strArr1 = "{{{\"0\":\"zhangsan\",\"1\":\"lisi\",\"2\":\"wangwu\",\"3\":\"maliu\"},{\"999\":\"zhangsan\",\"888\":\"lisi\",\"777\":\"wangwu\",\"666\":\"maliu\"},},"
-                + "{{\"00\":\"zhangsan\",\"11\":\"lisi\",\"22\":\"wangwu\",\"33\":\"maliu\"},{\"000\":\"zhangsan\",\"111\":\"lisi\",\"222\":\"wangwu\",\"333\":\"maliu\"}},\"22\":\"zhangsan\"}";
-        String strArr = "{\"people\": {\"name\":\"zhangsan\",\"age\":\"22\"},\"people2\": {\"name\":\"lisi\",\"age\": \"24\"}}";
-        Map m = json2Map(strArr1);
+        String strarr1 = "{\"@type\":\"cn.xx.xxx.\"}";
+
+        Map m = json2Map(strarr1);
         map2List(m);
         for(List l:fieldsList){
             System.out.println(l);
